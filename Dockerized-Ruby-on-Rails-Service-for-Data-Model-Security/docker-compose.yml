@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  db:
+    image: mysql:5.7
+    environment:
+      - MYSQL_DATABASE=analytics_data_model_database
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    expose:
+      - '3306'
+    ports:
+      - '3306:3306'
+  service:
+    build: .
+    command: bundle exec rails s -p 3000 -b '0.0.0.0'
+    volumes:
+      - .:/app
+    expose:
+      - '3306'
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      - db
+    environment:
+      - APPLICATION_NAME=analytics_data_model_service
+      - DB=analytics_data_model_database
+      - DB_USERNAME=root
+

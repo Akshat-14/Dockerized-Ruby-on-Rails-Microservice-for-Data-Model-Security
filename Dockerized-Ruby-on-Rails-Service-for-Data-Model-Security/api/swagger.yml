@@ -1,0 +1,312 @@
+swagger: '2.0'
+
+info:
+  description: Dockerize Microservice for Data Model Security Service
+  version: v1
+  title: Data Model Security Service
+tags:
+  - name: analytics_data_model_service
+    description: Operations on Data Model Security Service
+schemes:
+  - https
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /user_content_privileges:
+    get:
+      summary: Retrieves a list of user_client_privileges
+      description: Retrieves a list of user_client_privileges by client_id
+      produces:
+        - application/json
+      parameters:
+        - name: client_id
+          in: query
+          description: Unique identifier for the Client.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server error
+    post:
+      summary: Creates a record for user_client_privilege
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: user_client_privilege Info
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/UserClientPrivilegesCreate'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '500':
+          description: Server error
+  /user_client_privileges/{id}:
+    get:
+      summary: Retrieves a single user_client_privilege.
+      description: Retrieves a user_client_privilege by given id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server error
+    delete:
+      summary: Deletes a user_client_privilege.
+      description: Deletes a user_client_privilege using id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        204:
+          description: No Content
+        404:
+          description: Not Found
+        500:
+          description: Internal Server error
+    put:
+      summary: Updates a user_client_id.
+      description: Updates a user_client_id using id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: UserClientPrivilege Update Request
+          required: true
+          schema:
+            $ref: "#/definitions/UserClientPrivilegeUpdate"
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server error
+
+  /external_user_groups:
+    get:
+      summary: Retrieves a list of external_user_groups
+      description: Retrieves a list of external_user_privileges
+      produces:
+        - application/json
+      parameters:
+        - name: client_id
+          in: query
+          description: Unique identifier for the Client.
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+        '500':
+          description: Internal Server error
+    post:
+      summary: Creates a record for external_user_group
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: external_user_group Info
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/ExternalUserGroupCreate'
+      responses:
+        '201':
+          description: Created
+        '400':
+          description: Bad Request
+        '500':
+          description: Server error
+  /external_user_groups/{id}:
+    get:
+      summary: Retrieves a single external_user_group.
+      description: Retrieves a external_user_group by given id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server error
+    delete:
+      summary: Deletes a external_user_group.
+      description: Deletes a external_user_group using id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+      responses:
+        204:
+          description: No Content
+        404:
+          description: Not Found
+        500:
+          description: Internal Server error
+    put:
+      summary: Updates a external_user_group.
+      description: Updates a external_user_group using id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: integer
+        - in: body
+          name: body
+          description: UserClientPrivilege Update Request
+          required: true
+          schema:
+            $ref: "#/definitions/ExternalUserGroupUpdate"
+      responses:
+        '204':
+          description: No Content
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server error
+
+definitions:
+  UserClientPrivilegesCreate:
+    properties:
+      role:
+        type: string
+        description:  Role for user
+      content_id:
+        type: integer
+        description: content_id for user
+      user_grouping_type:
+        type: string
+        description: Grouping types for user.
+      user_grouping_id:
+        type: integer
+        description: Grouping id of user.
+      client_id:
+        type: string
+        description: The client_id of the user.
+      createdAt:
+        description: Timestamp of the creation of data model.
+        example: "2018-05-16T08:37:59.000Z"
+        format: date-time
+        type: string
+      updatedAt:
+        description: Timestamp of the latest update to the data model
+        example: "2018-05-16T08:37:59.000Z"
+        format: date-time
+        type: string
+    required:
+      - role
+      - content_id
+      - user_grouping_type
+      - user_grouping_id
+      - client_id
+
+  UserClientPrivilegeUpdate:
+    properties:
+      role:
+        type: string
+        description: Role for every user
+      content_id:
+        type: integer
+        description: content_id for user
+      user_grouping_type:
+        type: string
+        description: Grouping types for user.
+      user_grouping_id:
+        type: integer
+        description: Grouping id of user.
+
+  ExternalUserGroupCreate:
+    properties:
+      name:
+        type: string
+        description: Name of user
+      role:
+        type: string
+        description: role of user
+      source_group_id:
+        type: string
+        description: Group id of source
+      content_id:
+        type: integer
+        description: content_id of user
+      external_application_id:
+        type: integer
+        description: External apllication id of user group.
+      client_id:
+        type: string
+        description: client id of user group
+      createdAt:
+        description: Timestamp of the creation of data model.
+        example: "2018-05-16T08:37:59.000Z"
+        format: date-time
+        type: string
+      updatedAt:
+        description: Timestamp of the latest update to the data model
+        example: "2018-05-16T08:37:59.000Z"
+        format: date-time
+        type: string
+    required:
+      - name
+      - role
+      - source_group_id
+      - content_id
+      - external_application_id
+      - client_id
+
+  ExternalUserGroupUpdate:
+    properties:
+      name:
+        type: string
+        description: Name of user
+      role:
+        type: string
+        description: role of user
+      source_group_id:
+        type: string
+        description: Group id of source
+      content_id:
+        type: integer
+        description: content_id for user
+      external_application_id:
+        type: string
+        description: External apllication id of user group.
+      client_id:
+        type: integer
+        description: client id of user group
+
